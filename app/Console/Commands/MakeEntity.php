@@ -47,6 +47,7 @@ class MakeEntity extends Command
     {
         $name = $this->argument('name');
 
+        // Create controller
         if ($this->confirm('Do you wish to create Controller?')) {
             $stub = 'controller';
             if ($this->confirm('Do you wish to create Resource Controller?')) {
@@ -60,21 +61,22 @@ class MakeEntity extends Command
             );
         }
 
+        // Create Model and Migration
         if ($this->confirm('Do you wish to create Model?')) {
-            $command = 'make:model ' . ucfirst($name);
-            if ($this->confirm('Do you wish to create Migration?')) {
-                $command .= ' -m';
-            }
-
-            $this->callSilent($command);
+            $this->callSilent('make:model', [
+                'name' => ucfirst($name),
+                '-m' => $this->confirm('Do you wish to create Migration?')
+            ]);
         }
 
+        // Create Service
         $this->proceedAndSaveFile(
             $name,
             'services',
             app_path('Services/') . '/' . ucfirst($name).'Service.php'
         );
 
+        // Create Repository
         $this->proceedAndSaveFile(
             $name,
             'repository',
@@ -82,7 +84,7 @@ class MakeEntity extends Command
         );
     }
 
-    protected function proceedAndSaveFile($name, $stub, $path)
+    private function proceedAndSaveFile($name, $stub, $path)
     {
         $template = str_replace(
             [
@@ -99,7 +101,7 @@ class MakeEntity extends Command
         $this->filesystem->put($path, $template);
     }
 
-    protected function getStubs($type)
+    private function getStubs($type)
     {
         return $this->filesystem->get(__DIR__."/stubs/$type.stub");
     }
