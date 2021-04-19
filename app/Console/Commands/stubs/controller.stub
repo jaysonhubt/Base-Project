@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Services\{{Model}}Service;
+
+class {{Model}}Controller extends Controller
+{
+    /**
+     * @var {{Model}}Service
+     */
+    protected ${{model}}Service;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param {{Model}}Service ${{model}}Service
+     */
+    public function __construct({{Model}}Service ${{model}}Service)
+    {
+        $this->{{model}}Service = ${{model}}Service;
+    }
+}
